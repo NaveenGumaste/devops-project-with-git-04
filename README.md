@@ -46,3 +46,35 @@ terraform -chdir=terraform destroy
 ```
 
 Execution logs are in `execution-logs/`. Terraform destroy removes the container; the locally built image remains on the Docker host.
+
+## Git workflow
+
+This repository uses three branches:
+
+- `main` contains the stable project history.
+- `dev` is the integration branch.
+- `feature` contains task-specific changes before review.
+
+Push each local branch to GitHub so it appears in the remote repository:
+
+```powershell
+git push -u origin main
+git push -u origin dev
+git push -u origin feature
+```
+
+The `-u` option sets the upstream for each branch, so later `git push` and `git pull` commands can use the configured remote branch. Check local and remote branches with:
+
+```powershell
+git branch -a
+```
+
+Use pull requests to merge `feature` into `dev`, then `dev` into `main`. After the workflow is complete, an annotated version tag can mark the release:
+
+```powershell
+git switch main
+git tag -a v1.0.0 -m "Version 1.0.0"
+git push origin v1.0.0
+```
+
+The `-a` option creates an annotated tag with metadata, and `-m` adds its message.
